@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: light --default, dark;
+ 
+}
+.container{
+max-width:1440px;
+/* padding: 16px; */
+margin: 0 auto;
+@apply px-4;
+}
+
+
+.inline_nav a{
+  @apply text-lg text-gray-600 font-semibold h-full flex items-center border-b-2 border-b-transparent;
+}
+.inline_nav a.active{
+  @apply text-black border-b-blue-800!;
+}
+.inline_nav a:hover{
+  @apply text-black border-b-gray-400;
+}
+
+
+
+.block_nav a{
+  @apply text-lg text-gray-600 font-semibold h-full flex items-center p-3 border-l-4 border-l-transparent;
+}
+.block_nav a.active{
+  @apply text-black border-l-blue-800! bg-blue-200!;
+}
+.block_nav a:hover{
+  @apply text-black border-l-gray-400 bg-gray-200;
+}
