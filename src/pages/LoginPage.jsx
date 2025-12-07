@@ -30,7 +30,7 @@ const LoginPage = () => {
         handleSubmit,
         // watch,
         //control,
-        //formState: { errors },
+        formState: { errors },
     } = useForm()
 
     const onSubmit = async (data) => {
@@ -84,12 +84,16 @@ const LoginPage = () => {
 
                    
                     <h3 className='text-primary mb-0'>Email:</h3>
-                    <input type="email" {...register("email")} className='input md:input-lg w-full' placeholder='Enter your email address' />
+                    <input type="email" {...register("email", {required:'Email is required'})} className='input md:input-lg w-full' placeholder='Enter your email address' />
+
+                    {errors.email && <p class="error">{errors.email.message}</p>}
 
                     <h3 className='text-primary mb-0'>Password:</h3>
                     <div className='relative'>
-                        <input type={showPass ? 'text' : 'password'} {...register("password")} className='input md:input-lg w-full' placeholder='Enter Your password' /> <button type='button' onClick={() => setShowPass(!showPass)} className='z-99 absolute top-1/2 -translate-y-1/2 right-4 select-none'> {showPass ? <BsEyeSlashFill /> : <BsEyeFill />}</button>
+                        <input type={showPass ? 'text' : 'password'} {...register("password", {required:'Password is required'})} className='input md:input-lg w-full' placeholder='Enter Your password' /> <button type='button' onClick={() => setShowPass(!showPass)} className='z-99 absolute top-1/2 -translate-y-1/2 right-4 select-none'> {showPass ? <BsEyeSlashFill /> : <BsEyeFill />}</button>
                     </div>
+
+                    {errors.password && <p class="error">{errors.password.message}</p>}
 
                     {/* {password ? passwordError : ""} */}
 

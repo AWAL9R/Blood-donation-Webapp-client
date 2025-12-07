@@ -7,7 +7,7 @@ import { FaFacebook, FaGithub, FaLinkedin, FaXTwitter } from 'react-icons/fa6';
 
 const Footer = () => {
     return (
-        <div className="shadow-[0_-2px_3px_-1px_rgba(0,0,0,0.1),0_-1px_2px_-2px_rgba(0,0,0,0.06)] mt-3 bg-primary-content">
+        <div className="shadow-[0_-2px_3px_-1px_rgba(0,0,0,0.1),0_-1px_2px_-2px_rgba(0,0,0,0.06)] mt-3 bg-primary-content p-4">
             <div className="container">
                 <div className="flex justify-between flex-wrap pt-4 gap-4">
                     <div className='w-150'>

@@ -27,7 +27,7 @@ const NavBar = () => {
         <nav>
             <div className='max-[600px]:fixed z-999 bg-white w-full'>
                 <div className='shadow-sm '>
-                    <div className='container h-16  flex justify-between items-stretch select-none'>
+                    <div className='container p-4 h-16  flex justify-between items-stretch select-none'>
                         <div className='flex items-center gap-3'>
                             {/* Logo */}
                             <Link to='/' className='flex items-stretch gap-1'>

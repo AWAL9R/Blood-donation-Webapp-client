@@ -30,7 +30,7 @@ const SignupPage = () => {
         handleSubmit,
         // watch,
         control,
-        //formState: { errors },
+        formState: { errors },
     } = useForm()
 
     const onSubmit = async (data) => {
@@ -58,8 +58,8 @@ const SignupPage = () => {
                 }
 
                 
-                if (photoUpload?.data?.url) {
-                    const photo = photoUpload.data.url
+                //if (photoUpload?.data?.url) {
+                    const photo = photoUpload?.data?.url || import.meta.env.VITE_USER_DEFAULT_IMAGE;
                     updateProfile(auth.currentUser, {
                         displayName: name,
                         photoURL: photo
@@ -75,11 +75,11 @@ const SignupPage = () => {
                             toast(getFirebaseErrorMessage(err));
                             navigate(next)
                         });
-                } else {
-                    toast("Profile image update failed, update profile after login.")
-                    setSubmitting(false)
-                    navigate(next)
-                }
+                // } else {
+                //     toast("Profile image update failed, update profile after login.")
+                //     setSubmitting(false)
+                //     navigate(next)
+                // }
             })
             .catch(err => {
                 setSubmitting(false)
@@ -116,17 +116,23 @@ const SignupPage = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5 p-2 w-9/10 md:w-8/10'>
 
                     <h3 className='text-primary mb-0'>Name:</h3>
-                    <input type="text" {...register("name")} className='input md:input-lg w-full' placeholder='Enter your full name' />
+                    <input type="text" {...register("name", {required:'Name is required'})} className='input md:input-lg w-full' placeholder='Enter your full name' />
+
+                    {errors.name && <p class="error">{errors.name.message}</p>}
 
                     <h3 className='text-primary mb-0'>Email:</h3>
-                    <input type="email" {...register("email")} className='input md:input-lg w-full' placeholder='Enter your email address' />
+                    <input type="email" {...register("email", {required:'Email is required'})} className='input md:input-lg w-full' placeholder='Enter your email address' />
 
-                    <h3 className='text-primary mb-0'>Profile Image:</h3>
-                    <input type="file" {...register("photo")} className="file-input md:file-input-lg w-full" />
+                    {errors.email && <p class="error">{errors.email.message}</p>}
+
+                    <h3 className='text-primary mb-0'>Profile Picture:</h3>
+                    <input type="file" {...register("photo", {required:'Profile picture is required'})} className="file-input md:file-input-lg w-full" />
+
+                    {errors.photo && <p class="error">{errors.photo.message}</p>}
 
                     <h3 className='text-primary mb-0'>Password:</h3>
                     <div className='relative'>
-                        <input type={showPass ? 'text' : 'password'} {...register("password")} className='input md:input-lg w-full' placeholder='Enter Your password' /> <button type='button' onClick={() => setShowPass(!showPass)} className='z-99 absolute top-1/2 -translate-y-1/2 right-4 select-none'> {showPass ? <BsEyeSlashFill /> : <BsEyeFill />}</button>
+                        <input type={showPass ? 'text' : 'password'} {...register("password", {required:true})} className='input md:input-lg w-full' placeholder='Enter Your password' /> <button type='button' onClick={() => setShowPass(!showPass)} className='z-99 absolute top-1/2 -translate-y-1/2 right-4 select-none'> {showPass ? <BsEyeSlashFill /> : <BsEyeFill />}</button>
                     </div>
 
                     {password ? passwordError : ""}
