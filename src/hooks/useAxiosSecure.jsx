@@ -2,16 +2,17 @@ import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useAuth } from './useAuth';
 
-const axiosSecure = axios.create({
-    baseURL: "http://localhost:3000"
+export const axiosInstance = axios.create({
+    baseURL: "http://localhost:3000",
+    withCredentials: true,
 });
 
 const useAxiosSecure = () => {
 
     const {user}=useAuth()
 
-    useEffect(() => {
-        const unsubscribeRequestInterceptor = axios.interceptors.request.use(function (config) {
+    // useEffect(() => {
+        const unsubscribeRequestInterceptor = axiosInstance.interceptors.request.use(function (config) {
             // Do something before request is sent
             config.headers.Authorization=`Bearer ${user?.accessToken}`
             return config;
@@ -21,7 +22,7 @@ const useAxiosSecure = () => {
         },
             // { synchronous: true, runWhen: () => /* This function returns true */}
         );
-        const unsubscribeResponseInterceptor = axios.interceptors.response.use(function onFulfilled(response) {
+        const unsubscribeResponseInterceptor = axiosInstance.interceptors.response.use(function onFulfilled(response) {
             // Any status code that lie within the range of 2xx cause this function to trigger
             // Do something with response data
             if(response.status==401){
@@ -34,14 +35,14 @@ const useAxiosSecure = () => {
             return Promise.reject(error);
         });
 
-        return ()=>{
-            unsubscribeRequestInterceptor()
-            unsubscribeResponseInterceptor()
-        }
+    //     return ()=>{
+    //         unsubscribeRequestInterceptor()
+    //         unsubscribeResponseInterceptor()
+    //     }
 
-    })
+    // })
 
-    return axiosSecure;
+    return axiosInstance;
 };
 
 export default useAxiosSecure;

@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged,
 import { auth } from '../firebase/firebase';
 import toast from 'react-hot-toast';
 import { AuthContext } from './AuthContext';
+import useAxiosSecure, { axiosInstance } from '../hooks/useAxiosSecure';
 
 
 const googleProvider = new GoogleAuthProvider();
@@ -14,23 +15,52 @@ const AuthContextProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     
 
+
+    // useEffect(() => {
+    //     const unsubscribe = onAuthStateChanged(auth, (newUser) => {
+    //         setLoading(false)
+    //         setUser(newUser)
+    //     })
+
+    //     return () => {
+    //         unsubscribe();
+    //     }
+    // })
+
+
+
+
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (newUser) => {
-            setLoading(false)
-            setUser(newUser)
-        })
+        const controller = new AbortController();
+        const { signal } = controller;
 
-        return () => {
-            unsubscribe();
+        async function fetchData() {
+            try {
+                const response = await axiosInstance.get('/me', { signal });
+                //console.log(response.data);
+                if(response.data.user){
+                    setUser({...response.data.user})
+                }
+            } catch (error) { 
+                error
+            }
         }
-    })
 
-    const signInWithPassword = (email, password)=>{
+        fetchData();
+
+        // Cleanup function to abort the request when component unmounts or dependencies change
+        return () => {
+            controller.abort();
+        };
+    }, []); // Empty array for mount/unmount, add dependencies for re-fetching
+
+
+    const signInWithPassword = (email, password) => {
         setLoading(true)
         return signInWithEmailAndPassword(auth, email, password)
     }
 
-    const signUpWithPassword = (email, password)=>{
+    const signUpWithPassword = (email, password) => {
         setLoading(true)
         return createUserWithEmailAndPassword(auth, email, password)
     }
@@ -47,9 +77,13 @@ const AuthContextProvider = ({ children }) => {
             })
             .catch((error) => {
                 // An error happened.
-               toast.error("Error Logging out : "+error.message, { style: { borderRadius: '10px', background: '#333', color: '#fff', }, })
+                toast.error("Error Logging out : " + error.message, { style: { borderRadius: '10px', background: '#333', color: '#fff', }, })
             });
     }
+
+    // const setUserVerified=async(currUser)=>{
+
+    // }
 
     return (
         <AuthContext.Provider value={{ user, setUser, loading, setLoading, signInWithPassword, signUpWithPassword, googleSignin, logOut }}>

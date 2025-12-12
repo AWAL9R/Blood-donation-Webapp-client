@@ -22,6 +22,15 @@ const router = createBrowserRouter([
         element: <IndexPage></IndexPage>
       },
       {
+        loader: async()=>{
+            try{
+              let data=await fetch("/bangladesh.json")
+              return data;
+            }catch(err){
+              err; // to hide editor warning
+              return []
+            }
+        },
         path: "/signup",
         element: <SignupPage />
       },

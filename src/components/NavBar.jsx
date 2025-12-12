@@ -14,13 +14,24 @@ const NavBar = () => {
     //     email: 'awal9r@gmail.com',
     // };
     // user = null;
-    const {user, logOut}=useAuth()
+    const { user: u, logOut } = useAuth()
     //console.log(user)
     const [showMenu, setShowMenu] = useState(false);
 
+    let user = null;
+
+    if (u != null) {
+        user = {
+            displayName: u.name,
+            photoURL: u.photo,
+            ...u
+        }
+    }
+    console.log(user);
+
     const mainNavLinks = <>
         <NavLink to='/' className=''>Home</NavLink>
-        {user==null && <><NavLink to='/signup' className=''>Signup</NavLink></>}
+        {user == null && <><NavLink to='/signup' className=''>Signup</NavLink></>}
     </>
 
     return (
@@ -40,7 +51,7 @@ const NavBar = () => {
 
                             <div className="flex items-streach h-full gap-3 max-[600px]:w-0 overflow-hidden inline_nav pt-2">
                                 {mainNavLinks}
-                                
+
                             </div>
 
                         </div>
