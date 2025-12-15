@@ -5,7 +5,7 @@ import './index.css'
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import MainLayout from './layouts/MainLayout';
-import IndexPage from './pages/IndexPage';
+import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import AuthContextProvider from './contexts/AuthContextProvider';
@@ -17,6 +17,7 @@ import PrivateRoute from './components/PrivateRoute';
 import MyDonationRequests from './pages/dashboard/MyDonationRequests';
 import DashboardLayout from './layouts/DashboardLAyout';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import DonationPage from './pages/DonationPage';
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <IndexPage></IndexPage>
+        element: <HomePage></HomePage>
       },
       {
         loader: async () => {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: "/logout",
         element: <LogoutPage />
+      },
+      {
+        path: "/donation/:id",
+        element: <DonationPage />
       }
     ]
   },

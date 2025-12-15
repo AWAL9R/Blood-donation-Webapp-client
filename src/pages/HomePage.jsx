@@ -3,7 +3,7 @@ import Banner from '../components/Banner';
 import ContactUs from '../components/ContactUs';
 import Features from '../components/Features';
 
-const IndexPage = () => {
+const HomePage = () => {
     return (
         <div>
             <Banner></Banner>
@@ -16,4 +16,4 @@ const IndexPage = () => {
     );
 };
 
-export default IndexPage;
+export default HomePage;

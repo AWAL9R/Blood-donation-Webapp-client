@@ -6,9 +6,9 @@ import { useForm, useWatch } from 'react-hook-form';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
-import { getFirebaseErrorMessage } from '../firebase/firebaseErrorMessages';
-import { updateProfile } from 'firebase/auth';
-import { auth } from '../firebase/firebase';
+// import { getFirebaseErrorMessage } from '../firebase/firebaseErrorMessages';
+// import { updateProfile } from 'firebase/auth';
+// import { auth } from '../firebase/firebase';
 import { AuthContext } from '../contexts/AuthContext';
 import useAxiosSecure from '../hooks/useAxiosSecure';
 
@@ -16,7 +16,9 @@ import useAxiosSecure from '../hooks/useAxiosSecure';
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
 const SignupPage = () => {
-    const { setUser, signUpWithPassword, googleSignin } = useAuth()
+    const { setUser, 
+        // signUpWithPassword, googleSignin
+     } = useAuth()
     const [showPass, setShowPass] = useState(false);
     //const [password, setPassword] = useState('');
     // const [isPasswordOkay, set_isPasswordOkay] = useState(false);
@@ -79,7 +81,8 @@ const SignupPage = () => {
                 navigate(next)
             }
         } catch (err) {
-            toast("Registration failed.")
+            err;
+            toast.error("Registration failed.")
             setSubmitting(false)
         }
 
@@ -127,18 +130,18 @@ const SignupPage = () => {
 
     }
 
-    const handleGoogleSignin = () => {
-        setSubmitting(true)
-        googleSignin()
-            .then(() => {
-                setSubmitting(true)
-                navigate(next)
-            })
-            .catch(err => {
-                setSubmitting(false)
-                toast(getFirebaseErrorMessage(err));
-            })
-    }
+    // const handleGoogleSignin = () => {
+    //     setSubmitting(true)
+    //     googleSignin()
+    //         .then(() => {
+    //             setSubmitting(true)
+    //             navigate(next)
+    //         })
+    //         .catch(err => {
+    //             setSubmitting(false)
+    //             toast(getFirebaseErrorMessage(err));
+    //         })
+    // }
 
     const password = useWatch({ control, name: "password" });
     // const confirm_password = useWatch({ control, name: "confirm_password" });

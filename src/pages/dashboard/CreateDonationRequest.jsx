@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
 import { Link, useLoaderData } from 'react-router';
 import { useForm, useWatch } from 'react-hook-form';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useAuth } from '../../hooks/useAuth';
@@ -51,6 +50,7 @@ const CreateDonationRequest = () => {
                 // navigate(next)
            // }
         } catch (err) {
+            err;
             toast.error("Request Creation failed.")
             setSubmitting(false)
         }

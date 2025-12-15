@@ -6,14 +6,16 @@ import { useForm } from 'react-hook-form';
 // import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
-import { getFirebaseErrorMessage } from '../firebase/firebaseErrorMessages';
+// import { getFirebaseErrorMessage } from '../firebase/firebaseErrorMessages';
 // import { updateProfile } from 'firebase/auth';
 // import { auth } from '../firebase/firebase';
 import { AuthContext } from '../contexts/AuthContext';
 import useAxiosSecure from '../hooks/useAxiosSecure';
 
 const LoginPage = () => {
-    const { setUser, signInWithPassword, googleSignin } = useAuth()
+    const { setUser, 
+        // signInWithPassword, googleSignin
+     } = useAuth()
     const [showPass, setShowPass] = useState(false);
     //const [password, setPassword] = useState('');
     // const [isPasswordOkay, set_isPasswordOkay] = useState(false);
@@ -62,7 +64,8 @@ const LoginPage = () => {
                 navigate(next)
             }
         } catch (err) {
-            toast("Login failed.")
+            err;
+            toast.error("Login failed.")
             setSubmitting(false)
         }
 
@@ -70,18 +73,18 @@ const LoginPage = () => {
 
     }
 
-    const handleGoogleSignin = () => {
-        setSubmitting(true)
-        googleSignin()
-            .then(() => {
-                setSubmitting(true)
-                navigate(next)
-            })
-            .catch(err => {
-                setSubmitting(false)
-                toast(getFirebaseErrorMessage(err));
-            })
-    }
+    // const handleGoogleSignin = () => {
+    //     setSubmitting(true)
+    //     googleSignin()
+    //         .then(() => {
+    //             setSubmitting(true)
+    //             navigate(next)
+    //         })
+    //         .catch(err => {
+    //             setSubmitting(false)
+    //             toast(getFirebaseErrorMessage(err));
+    //         })
+    // }
 
     // const password = useWatch({ control, name: "password" });
     // const passwordError = CheckPassword({ password: password ?? '' })
