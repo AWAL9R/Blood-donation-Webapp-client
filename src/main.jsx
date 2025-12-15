@@ -15,6 +15,8 @@ import CreateDonationRequest from './pages/dashboard/CreateDonationRequest';
 import Dashboard from './pages/dashboard/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
 import MyDonationRequests from './pages/dashboard/MyDonationRequests';
+import DashboardLayout from './layouts/DashboardLAyout';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const router = createBrowserRouter([
   {
@@ -50,7 +52,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <PrivateRoute><MainLayout></MainLayout></PrivateRoute>,
+    element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
     children: [
       {
         index: true,
@@ -81,9 +83,11 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <QueryClientProvider client={queryClient}>
     <AuthContextProvider>
       <Toaster
         position="top-center"
@@ -91,5 +95,6 @@ createRoot(document.getElementById('root')).render(
       />
       <RouterProvider router={router} />
     </AuthContextProvider>
+    </QueryClientProvider>
   </StrictMode>,
 )
