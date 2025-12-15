@@ -74,8 +74,8 @@ const SignupPage = () => {
         try {
             const register = await axiosSecure.post('/register', { name, email, password, photo, bloodGroup, division, district, upazila })
             toast(register.data.message)
-            if(register.data.user){
-                setUser({...register.data.user})
+            if (register.data.user) {
+                setUser({ ...register.data.user })
                 navigate(next)
             }
         } catch (err) {
@@ -265,6 +265,7 @@ const SignupPage = () => {
                         Login with Google
                     </button> */}
 
+                    <div className="h-4"></div>
 
                 </form>
             </div>

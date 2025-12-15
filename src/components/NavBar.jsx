@@ -27,7 +27,7 @@ const NavBar = () => {
             ...u
         }
     }
-    console.log(user);
+    // console.log(user);
 
     const mainNavLinks = <>
         <NavLink to='/' className=''>Home</NavLink>
@@ -51,6 +51,8 @@ const NavBar = () => {
 
                             <div className="flex items-streach h-full gap-3 max-[600px]:w-0 overflow-hidden inline_nav pt-2">
                                 {mainNavLinks}
+
+                                 {user!=null && <><NavLink to='/dashboard' className=''>Dashboard</NavLink></>}
 
                             </div>
 
@@ -82,7 +84,7 @@ const NavBar = () => {
                     <div className={`transition-all duration-500 overflow-hidden max-h-0 ${showMenu ? 'max-[600px]:max-h-1000' : 'max-[600px]:max-h-0'}`}>
                         <div className='block_nav mx-4'>
                             {mainNavLinks}
-                            <NavLink to='/login' className=''>Login</NavLink>
+                            {user==null && <NavLink to='/login' className=''>Login</NavLink>}
                             {user != null && <div className="border-t border-t-gray-300 py-3 mt-1">
                                 <div className='flex gap-2 items-center mb-2'>
                                     <img referrerPolicy="no-referrer" src={user?.photoURL} alt="" className='w-13 aspect-square rounded-full' />

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth } from '../firebase/firebase';
 import toast from 'react-hot-toast';
 import { AuthContext } from './AuthContext';
-import useAxiosSecure, { axiosInstance } from '../hooks/useAxiosSecure';
+import { axiosInstance } from '../hooks/useAxiosSecure';
 
 
 const googleProvider = new GoogleAuthProvider();
@@ -13,7 +13,7 @@ const googleProvider = new GoogleAuthProvider();
 const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    
+
 
 
     // useEffect(() => {
@@ -38,10 +38,13 @@ const AuthContextProvider = ({ children }) => {
             try {
                 const response = await axiosInstance.get('/me', { signal });
                 //console.log(response.data);
-                if(response.data.user){
-                    setUser({...response.data.user})
+                if (response.data.user) {
+                    setUser({ ...response.data.user })
+                }else{
+                    setUser(null)
                 }
-            } catch (error) { 
+                setLoading(false)
+            } catch (error) {
                 error
             }
         }
@@ -71,14 +74,27 @@ const AuthContextProvider = ({ children }) => {
     }
     const logOut = () => {
         setLoading(true)
-        signOut(auth)
-            .then(() => {
-                toast.success("Logged out", { style: { borderRadius: '10px', background: '#333', color: '#fff', }, })
+        // signOut(auth)
+        //     .then(() => {
+        //         toast.success("Logged out", { style: { borderRadius: '10px', background: '#333', color: '#fff', }, })
+        //     })
+        //     .catch((error) => {
+        //         // An error happened.
+        //         toast.error("Error Logging out : " + error.message, { style: { borderRadius: '10px', background: '#333', color: '#fff', }, })
+        //     });
+        axiosInstance.get('/logout')
+            .then(data => {
+                if (data.data.message) {
+                    toast(data.data.message)
+                    setUser(null)
+                } else {
+                    toast("Something went wrong....")
+                }
+                setLoading(false)
+            }).catch(err => {
+                toast(err.message)
+                setLoading(false)
             })
-            .catch((error) => {
-                // An error happened.
-                toast.error("Error Logging out : " + error.message, { style: { borderRadius: '10px', background: '#333', color: '#fff', }, })
-            });
     }
 
     // const setUserVerified=async(currUser)=>{

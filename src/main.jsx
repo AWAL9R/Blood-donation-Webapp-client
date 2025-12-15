@@ -11,6 +11,10 @@ import SignupPage from './pages/SignupPage';
 import AuthContextProvider from './contexts/AuthContextProvider';
 import { Toaster } from 'react-hot-toast';
 import LogoutPage from './pages/LogoutPage';
+import CreateDonationRequest from './pages/dashboard/CreateDonationRequest';
+import Dashboard from './pages/dashboard/Dashboard';
+import PrivateRoute from './components/PrivateRoute';
+import MyDonationRequests from './pages/dashboard/MyDonationRequests';
 
 const router = createBrowserRouter([
   {
@@ -22,14 +26,14 @@ const router = createBrowserRouter([
         element: <IndexPage></IndexPage>
       },
       {
-        loader: async()=>{
-            try{
-              let data=await fetch("/bangladesh.json")
-              return data;
-            }catch(err){
-              err; // to hide editor warning
-              return []
-            }
+        loader: async () => {
+          try {
+            let data = await fetch("/bangladesh.json")
+            return data;
+          } catch (err) {
+            err; // to hide editor warning
+            return []
+          }
         },
         path: "/signup",
         element: <SignupPage />
@@ -41,12 +45,39 @@ const router = createBrowserRouter([
       {
         path: "/logout",
         element: <LogoutPage />
-      },
-      {
-        path: "*",
-        element: <>Page not found</>
       }
     ]
+  },
+  {
+    path: "/dashboard",
+    element: <PrivateRoute><MainLayout></MainLayout></PrivateRoute>,
+    children: [
+      {
+        index: true,
+        element: <Dashboard></Dashboard>
+      },
+      {
+        loader: async () => {
+          try {
+            let data = await fetch("/bangladesh.json")
+            return data;
+          } catch (err) {
+            err; // to hide editor warning
+            return []
+          }
+        },
+        path: "create-donation-request",
+        element: <CreateDonationRequest></CreateDonationRequest>
+      },
+      {
+        path:"my-donation-requests",
+        element: <MyDonationRequests></MyDonationRequests>
+      }
+    ]
+  },
+  {
+    path: "*",
+    element: <>Page not found</>
   },
 ]);
 

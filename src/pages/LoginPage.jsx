@@ -16,7 +16,7 @@ const LoginPage = () => {
     const { setUser, signInWithPassword, googleSignin } = useAuth()
     const [showPass, setShowPass] = useState(false);
     //const [password, setPassword] = useState('');
-   // const [isPasswordOkay, set_isPasswordOkay] = useState(false);
+    // const [isPasswordOkay, set_isPasswordOkay] = useState(false);
     const navigate = useNavigate();
 
     const location = useLocation();
@@ -57,12 +57,12 @@ const LoginPage = () => {
         try {
             const login = await axiosSecure.post('/login', { email, password })
             toast(login.data.message)
-            if(login.data.user){
-                setUser({...login.data.user})
+            if (login.data.user) {
+                setUser({ ...login.data.user })
                 navigate(next)
             }
         } catch (err) {
-            toast("Registration failed.")
+            toast("Login failed.")
             setSubmitting(false)
         }
 
@@ -91,21 +91,21 @@ const LoginPage = () => {
             {/* <Title value={`${AppName} - Register`}></Title> */}
             <div className="max-w-155! text-center">
                 <h2>Welcome back</h2>
-            <h3>Don't have an account? <Link to={`/signup${location.search}`} className='text-primary'>Sign up</Link></h3>
+                <h3>Don't have an account? <Link to={`/signup${location.search}`} className='text-primary'>Sign up</Link></h3>
             </div>
             <div className="container px-0! max-w-155!  bg-base-100 shadow-2xl rounded-3xl flex flex-col items-center justify-center overflow-hidden">
                 <h2 className='font-bold mb-5 text-center text-white bg-blue-300 w-full p-4'>LOGIN</h2>
                 <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5 p-2 w-9/10 md:w-8/10'>
 
-                   
+
                     <h3 className='text-primary mb-0'>Email:</h3>
-                    <input type="email" {...register("email", {required:'Email is required'})} className='input md:input-lg w-full' placeholder='Enter your email address' />
+                    <input type="email" {...register("email", { required: 'Email is required' })} className='input md:input-lg w-full' placeholder='Enter your email address' />
 
                     {errors.email && <p class="error">{errors.email.message}</p>}
 
                     <h3 className='text-primary mb-0'>Password:</h3>
                     <div className='relative'>
-                        <input type={showPass ? 'text' : 'password'} {...register("password", {required:'Password is required'})} className='input md:input-lg w-full' placeholder='Enter Your password' /> <button type='button' onClick={() => setShowPass(!showPass)} className='z-99 absolute top-1/2 -translate-y-1/2 right-4 select-none'> {showPass ? <BsEyeSlashFill /> : <BsEyeFill />}</button>
+                        <input type={showPass ? 'text' : 'password'} {...register("password", { required: 'Password is required' })} className='input md:input-lg w-full' placeholder='Enter Your password' /> <button type='button' onClick={() => setShowPass(!showPass)} className='z-99 absolute top-1/2 -translate-y-1/2 right-4 select-none'> {showPass ? <BsEyeSlashFill /> : <BsEyeFill />}</button>
                     </div>
 
                     {errors.password && <p class="error">{errors.password.message}</p>}
@@ -114,7 +114,7 @@ const LoginPage = () => {
 
 
                     {/* <input  type="submit" value="Register" className='btn btn-primary w-full' /> */}
-                    <button disabled={ isSubmitting} className='btn btn-primary md:btn-lg w-full'>Login</button>
+                    <button disabled={isSubmitting} className='btn btn-primary md:btn-lg w-full'>Login</button>
 
                     {/* <div> Already have an account? login </div> */}
 
@@ -127,7 +127,7 @@ const LoginPage = () => {
                         Login with Google
                     </button> */}
 
-
+                    <div className="h-4"></div>
                 </form>
             </div>
         </div>
