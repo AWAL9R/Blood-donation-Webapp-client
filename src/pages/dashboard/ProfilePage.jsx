@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
-import { Link, useLoaderData, useLocation, useNavigate } from 'react-router';
+import { Link, useLoaderData, useNavigate } from 'react-router';
 import CheckPassword from '../../components/CheckPassword';
 import { useForm, useWatch } from 'react-hook-form';
 import axios from 'axios';
@@ -27,10 +27,10 @@ const ProfilePage = () => {
     // console.log(geoData);
     const navigate = useNavigate();
 
-    const location = useLocation();
-    const params = new URLSearchParams(location.search);
+    // const location = useLocation();
+    // const params = new URLSearchParams(location.search);
     // console.log(params.get("next"))
-    const next = decodeURIComponent(params.get("next") || '') || "/";
+    // const next = decodeURIComponent(params.get("next") || '') || "/";
 
     const [isSubmitting, setSubmitting] = useState(false);
 
@@ -164,7 +164,7 @@ const ProfilePage = () => {
         setValue('division', user_division, { shouldWatch: true });
         setValue('district', user_district, { shouldWatch: true });
         setValue('upazila', user_upazila, { shouldWatch: true });
-    }, [division, district, user_division, user_district, user_upazila]);
+    }, [division, district, user_division, user_district, user_upazila, setValue]);
 
     return (
         <div className="min-h-[80vh] max-[800px]:min-h-[100vw] p-4 my-10 flex flex-col items-center justify-center ">

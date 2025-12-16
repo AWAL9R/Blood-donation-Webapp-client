@@ -5,6 +5,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from 'react-router';
 
 
 
@@ -15,6 +16,7 @@ const CreateDonationRequest = () => {
 
     const {user}=useAuth()
     // console.log(user);
+    const navigate=useNavigate()
 
     const [isSubmitting, setSubmitting] = useState(false);
 
@@ -45,10 +47,9 @@ const CreateDonationRequest = () => {
         try {
             const register = await axiosSecure.post('/create_donation_request', { ...data })
             toast(register.data.message)
-            //if (register.data.user) {
-                // setUser({ ...register.data.user })
-                // navigate(next)
-           // }
+            if (register.data.success) {
+                navigate(`/donation/${register.data.id}`)
+           }
         } catch (err) {
             err;
             toast.error("Request Creation failed.")

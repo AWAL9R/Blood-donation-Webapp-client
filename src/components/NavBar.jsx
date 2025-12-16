@@ -31,6 +31,8 @@ const NavBar = () => {
 
     const mainNavLinks = <>
         <NavLink to='/' className=''>Home</NavLink>
+        <NavLink to='/blood-donation-requests' className=''>Donation Requests</NavLink>
+
         {user == null && <><NavLink to='/signup' className=''>Signup</NavLink></>}
     </>
 

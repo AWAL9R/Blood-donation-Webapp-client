@@ -1,21 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { useAuth } from '../../hooks/useAuth';
-import { useQuery } from '@tanstack/react-query';
-import useAxiosSecure from '../../hooks/useAxiosSecure';
+// import { useQuery } from '@tanstack/react-query';
+// import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { DonationRequestTable } from './MyDonationRequests';
+import BloodDonationRequests from '../BloodDonationRequests';
 
 
 
 const Dashboard = () => {
     const { user } = useAuth()
-    const axiosSecure = useAxiosSecure()
-    const requests = useQuery({
-        queryKey: ['my-donation-requests', user.email, 'limit-3'], queryFn: async () => {
-            const data = await axiosSecure.get('/my-donation-requests?limit=3')
-            return data.data;
-        }
-    })
+    // const axiosSecure = useAxiosSecure()
+    // const requests = useQuery({
+    //     queryKey: ['my-donation-requests', user?.email, 'limit-3'], queryFn: async () => {
+    //         const data = await axiosSecure.get('/my-donation-requests?limit=3')
+    //         return data.data;
+    //     }
+    // })
     // console.log(requests);
     // return (
     //     <div>
@@ -40,17 +41,26 @@ const Dashboard = () => {
                     </div>
 
                     <div className="flex gap-3">
-                        <a href="/profile" className="btn btn-outline btn-primary">
+                        <a href="/dashboard/profile" className="btn btn-outline btn-primary">
                             View Profile
                         </a>
-                        <Link to='create-donation-request' className="btn btn-primary">Create Donation Request</Link>
+                        <Link to='/dashboard/create-donation-request' className="btn btn-primary">Create Donation Request</Link>
                     </div>
 
                 </div>
             </section>
 
 
-            {requests.data && <DonationRequestTable title="My recent donation requests" donations={requests.data} afterTable={<Link to='my-donation-requests' className='btn w-full'>View my all requests</Link>} afterDelete={requests.refetch}></DonationRequestTable>}
+            {/* {requests.data?.length>0 && 
+            <section className="bg-base-100 rounded-2xl shadow p-6 md:p-8 my-10">
+            <div className="overflow-x-auto">
+            <DonationRequestTable title="My recent donation requests" donations={requests.data} afterDelete={requests.refetch}></DonationRequestTable>
+            </div>
+            <Link to='my-donation-requests' className='btn w-full'>View my all requests</Link>
+            </section>
+            } */}
+            
+            <BloodDonationRequests limit={3} title="My recent donation requests" route='my-donation-requests'  afterTable={<Link to='my-donation-requests' className='btn w-full'>View my all requests</Link>} hiddenIfNoData={true}></BloodDonationRequests>
         </>
     )
 

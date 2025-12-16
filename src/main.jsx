@@ -19,6 +19,8 @@ import DashboardLayout from './layouts/DashboardLAyout';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import DonationPage from './pages/DonationPage';
 import ProfilePage from './pages/dashboard/ProfilePage';
+import BloodDonationRequests from './pages/BloodDonationRequests';
+import AdminRoute from './components/AdminRoute';
 
 
 
@@ -56,8 +58,13 @@ const router = createBrowserRouter([
       },
       {
         path: "/donation/:id",
-        element: <DonationPage />
-      }
+        element: <PrivateRoute><DonationPage /></PrivateRoute>
+      },
+      {
+        path: "/blood-donation-requests",
+        element: <BloodDonationRequests />
+      },
+
     ]
   },
   {
@@ -76,6 +83,10 @@ const router = createBrowserRouter([
       {
         path:"my-donation-requests",
         element: <MyDonationRequests></MyDonationRequests>
+      },
+      {
+        path:"all-blood-donation-request",
+        element: <AdminRoute fallback={<h2>You are not an admin.</h2>}><BloodDonationRequests title="All Donation Requests" route='all-donation-request'  /></AdminRoute>
       },
       {
         loader: geoDataLoader,
