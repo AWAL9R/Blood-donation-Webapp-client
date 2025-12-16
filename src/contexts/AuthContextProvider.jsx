@@ -46,7 +46,8 @@ const AuthContextProvider = ({ children }) => {
                 setLoading(false)
             } catch (error) {
                 error;
-                //setLoading(false)
+                // console.log(error);
+                if(error.status==401)setLoading(false)
             }
         }
 

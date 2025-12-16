@@ -21,6 +21,10 @@ import DonationPage from './pages/DonationPage';
 import ProfilePage from './pages/dashboard/ProfilePage';
 import BloodDonationRequests from './pages/BloodDonationRequests';
 import AdminRoute from './components/AdminRoute';
+import AllBloodDonationRequests from './pages/dashboard/AllBloodDonationRequests';
+import AllUsers from './pages/dashboard/AllUsers';
+import AdminRequiredCard from './components/AdminRequiredCard';
+import Error404 from './components/Error404';
 
 
 
@@ -86,7 +90,11 @@ const router = createBrowserRouter([
       },
       {
         path:"all-blood-donation-request",
-        element: <AdminRoute fallback={<h2>You are not an admin.</h2>}><BloodDonationRequests title="All Donation Requests" route='all-donation-request'  /></AdminRoute>
+        element: <AdminRoute fallback={<AdminRequiredCard/>}><AllBloodDonationRequests/></AdminRoute>
+      },
+      {
+        path:"all-users",
+        element: <AdminRoute fallback={<AdminRequiredCard/>}><AllUsers/></AdminRoute>
       },
       {
         loader: geoDataLoader,
@@ -97,7 +105,7 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <>Page not found</>
+    element: <Error404/>
   },
 ]);
 

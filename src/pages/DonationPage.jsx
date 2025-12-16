@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 // import { useAuth } from '../hooks/useAuth';
 import Loading from '../components/Loading';
 import { statusColor } from '../settings';
+import DataNotFoundCard from '../components/DataNotFoundCard';
 
 const DonationPage = ({ onAccept, onBack }) => {
     const { id } = useParams()
@@ -19,8 +20,8 @@ const DonationPage = ({ onAccept, onBack }) => {
         }
     })
 
-    if (requests.status==200 && !requests.data) {
-        return <h2>Error</h2>
+    if (requests.data?.success==true && !requests.data?.data ) {
+        return <DataNotFoundCard/>
     }
 
     if (!requests.data) {
@@ -42,7 +43,7 @@ const DonationPage = ({ onAccept, onBack }) => {
         donation_time,
         request_message,
         status
-    } = requests.data;
+    } = requests.data.data;
 
     return (
         <section className="max-w-5xl mx-auto p-6">
