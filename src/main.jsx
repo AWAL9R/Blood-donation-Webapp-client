@@ -18,6 +18,19 @@ import MyDonationRequests from './pages/dashboard/MyDonationRequests';
 import DashboardLayout from './layouts/DashboardLAyout';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import DonationPage from './pages/DonationPage';
+import ProfilePage from './pages/dashboard/ProfilePage';
+
+
+
+const geoDataLoader=async () => {
+          try {
+            let data = await fetch("/bangladesh.json")
+            return data;
+          } catch (err) {
+            err; // to hide editor warning
+            return []
+          }
+        }
 
 const router = createBrowserRouter([
   {
@@ -29,15 +42,7 @@ const router = createBrowserRouter([
         element: <HomePage></HomePage>
       },
       {
-        loader: async () => {
-          try {
-            let data = await fetch("/bangladesh.json")
-            return data;
-          } catch (err) {
-            err; // to hide editor warning
-            return []
-          }
-        },
+        loader: geoDataLoader,
         path: "/signup",
         element: <SignupPage />
       },
@@ -64,21 +69,18 @@ const router = createBrowserRouter([
         element: <Dashboard></Dashboard>
       },
       {
-        loader: async () => {
-          try {
-            let data = await fetch("/bangladesh.json")
-            return data;
-          } catch (err) {
-            err; // to hide editor warning
-            return []
-          }
-        },
+        loader: geoDataLoader,
         path: "create-donation-request",
         element: <CreateDonationRequest></CreateDonationRequest>
       },
       {
         path:"my-donation-requests",
         element: <MyDonationRequests></MyDonationRequests>
+      },
+      {
+        loader: geoDataLoader,
+        path:"profile",
+        element: <ProfilePage/>
       }
     ]
   },
