@@ -73,7 +73,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/funding",
-        element: <FundingPage />
+        element: <PrivateRoute><FundingPage /></PrivateRoute>
       },
       {
         loader: geoDataLoader,

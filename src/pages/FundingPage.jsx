@@ -2,16 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import useAxiosSecure from '../hooks/useAxiosSecure';
 import toast from 'react-hot-toast';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
 
 const FundingPage = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure()
     const [funds, setFunds] = useState([
-        { id: 1, name: "Alice Johnson", amount: 500, date: "2023-10-01" },
-        { id: 2, name: "Bob Smith", amount: 1200, date: "2023-10-05" },
-        { id: 3, name: "Charlie Davis", amount: 750, date: "2023-10-12" },
+        // { id: 1, name: "Alice Johnson", amount: 500, createdAt: "2023-10-01" },
+        // { id: 2, name: "Bob Smith", amount: 1200, createdAt: "2023-10-05" },
+        // { id: 3, name: "Charlie Davis", amount: 750, createdAt: "2023-10-12" },
     ]);
+
+    const requests = useQuery({
+        queryKey: ["fundings", user?.email], queryFn: async () => {
+            const data = await axiosSecure.get(`/fundings`)
+
+            if (data?.data?.data) {
+                setFunds(data.data.data)
+            }
+            return data.data.data;
+        }
+    })
 
     const [showForm, setShowForm] = useState(false);
     const [isSubmitting, setSubmitting] = useState(false);
@@ -37,13 +49,16 @@ const FundingPage = () => {
     };
 
     const location = useLocation()
+    const navigate = useNavigate()
     useEffect(() => {
         // console.log(location);
         if (location.search.includes("success=true&id=")) {
             axiosSecure.post('/funding-success', { id: location.search.split("id=")[1].split("&")[0] })
                 .then(res => {
                     if (res.data.success) {
-                        console.log(res.data);
+                        // console.log(res.data);
+                        requests.refetch()
+                        navigate('/funding')
                     }
                 })
                 .catch(err => {
@@ -123,7 +138,7 @@ const FundingPage = () => {
                             </thead>
                             <tbody className="divide-y divide-gray-100">
                                 {funds.map((fund) => (
-                                    <tr key={fund.id} className="hover:bg-gray-50 transition-colors">
+                                    <tr key={fund._id} className="hover:bg-gray-50 transition-colors">
                                         <td className="px-6 py-4">
                                             <div className="font-medium text-gray-900">{fund.name}</div>
                                         </td>
@@ -133,7 +148,7 @@ const FundingPage = () => {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-500">
-                                            {fund.date}
+                                            {fund.createdAt}
                                         </td>
                                     </tr>
                                 ))}
