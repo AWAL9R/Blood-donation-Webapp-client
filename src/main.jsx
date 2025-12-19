@@ -27,6 +27,7 @@ import AdminRequiredCard from './components/AdminRequiredCard';
 import Error404 from './components/Error404';
 import AdminOrVolunteerRoute from './components/AdminOrVolunteerRoute';
 import SearchPage from './pages/SearchPage';
+import FundingPage from './pages/FundingPage';
 
 
 
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: "/blood-donation-requests",
         element: <BloodDonationRequests />
+      },
+      {
+        path: "/funding",
+        element: <FundingPage />
       },
       {
         loader: geoDataLoader,

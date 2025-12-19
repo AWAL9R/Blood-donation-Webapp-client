@@ -34,6 +34,7 @@ const NavBar = () => {
         <NavLink to='/blood-donation-requests' className=''>Donation Requests</NavLink>
 
         {user == null && <><NavLink to='/signup' className=''>Signup</NavLink></>}
+        {user != null && <><NavLink to='/funding' className=''>Funding</NavLink></>}
     </>
 
     return (
