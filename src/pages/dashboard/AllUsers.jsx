@@ -4,19 +4,28 @@ import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
+import Pagination from '../../components/Pagination';
 
 const AllUsers = () => {
+
+    const [currentPage, setCurrentPage]=useState(0)
+    const [pages, setPages]=useState(0)
+
+    const [filterStatus, setFilterStatus] = useState('all');
 
     const { user } = useAuth()
     const axiosSecure = useAxiosSecure()
     const requests = useQuery({
-        queryKey: ['users', user?.email, "limit"], queryFn: async () => {
-            const data = await axiosSecure.get(`/users?`)
-            return data.data;
+        queryKey: ['users', user?.email, "limit", currentPage, filterStatus], queryFn: async () => {
+            const data = await axiosSecure.get(`/users?skip=${currentPage*10}&status=${filterStatus}`)
+            if(data?.data?.totalMatch){
+                setPages(Math.ceil(data?.data?.totalMatch/10))
+            }
+            return data?.data;
         }
     })
 
-    const [filterStatus, setFilterStatus] = useState('all');
+    
 
     // Destructure status and data from the query object
     const { data, isLoading, isError } = requests;
@@ -172,6 +181,9 @@ const AllUsers = () => {
                     </tbody>
                 </table>
             </div>
+           <div className='flex justify-center'>
+             <Pagination pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage}></Pagination>
+           </div>
         </div>
     );
 };

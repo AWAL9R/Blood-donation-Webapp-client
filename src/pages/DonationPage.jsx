@@ -1,14 +1,22 @@
-import React from 'react';
-import { useParams } from 'react-router';
+import React, { useRef } from 'react';
+import { useNavigate, useParams } from 'react-router';
 import useAxiosSecure from '../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 // import { useAuth } from '../hooks/useAuth';
 import Loading from '../components/Loading';
 import { statusColor } from '../settings';
 import DataNotFoundCard from '../components/DataNotFoundCard';
+import Swal from 'sweetalert2';
+import { useAuth } from '../hooks/useAuth';
 
-const DonationPage = ({ onAccept, onBack }) => {
+const DonationPage = () => {
     const { id } = useParams()
+
+    const { user } = useAuth()
+
+    const navigate = useNavigate()
+
+    const modalRef = useRef(null)
 
 
     // const { user } = useAuth()
@@ -20,8 +28,8 @@ const DonationPage = ({ onAccept, onBack }) => {
         }
     })
 
-    if (requests.data?.success==true && !requests.data?.data ) {
-        return <DataNotFoundCard/>
+    if (requests.data?.success == true && !requests.data?.data) {
+        return <DataNotFoundCard />
     }
 
     if (!requests.data) {
@@ -45,10 +53,63 @@ const DonationPage = ({ onAccept, onBack }) => {
         status
     } = requests.data.data;
 
+    const handleAccept = async (donation) => {
+        modalRef.current?.close()
+        try {
+            const response = await axiosSecure.patch(`/donation-accept/${donation._id}`)
+            // console.log(response);
+            if (!response.status == 200) {
+                const response_json = response.data;
+                return Swal.showValidationMessage(`
+                          ${JSON.stringify(response_json.message)}
+                        `);
+            }
+            Swal.fire({
+                title: `Request of ${donation.receiver_name}'s is accepted!`,
+            });
+            requests.refetch()
+        } catch (error) {
+            // console.log(error);
+            return Swal.fire(`
+                        Request failed: ${error.message}
+                      `);
+        }
+    }
+
+    const showModal = () => {
+        modalRef.current?.showModal()
+    }
+
+
+
     return (
         <section className="max-w-5xl mx-auto p-6">
             <div className="card bg-base-100 shadow-xl">
                 <div className="card-body gap-6">
+
+                    {/* <button className="btn" onClick={() => document.getElementById('my_modal_5').showModal()}>open modal</button> */}
+                    <dialog ref={modalRef} className="modal modal-bottom sm:modal-middle">
+                        <div className="modal-box">
+                            <h3 className="font-bold text-lg">Accept this Donation!</h3>
+                            <form onSubmit={(e) => { e.preventDefault(); handleAccept(requests.data.data) }}>
+                                <p className="py-4 text-lg flex gap-1 items-center">
+                                    Donor Name:
+                                    <input type="text" className='input' value={user?.name} disabled={true} />
+                                </p>
+                                <p className="py-4 text-lg flex gap-1 items-center">
+                                    Donor Email:
+                                    <input type="text" className='input' value={user?.email} disabled={true} />
+                                </p>
+                                <button className="btn btn-primary">Accept this request</button>
+                            </form>
+                            <div className="modal-action">
+                                <form method="dialog">
+                                    {/* if there is a button in form, it will close the modal */}
+                                    <button className="btn">Close</button>
+                                </form>
+                            </div>
+                        </div>
+                    </dialog>
 
                     {/* Header */}
                     <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
@@ -118,12 +179,14 @@ const DonationPage = ({ onAccept, onBack }) => {
 
                     {/* Actions */}
                     <div className="card-actions justify-end gap-3">
-                        <button onClick={onBack} className="btn btn-outline">
+                        <button onClick={() => navigate(-1)} className="btn btn-outline">
                             Back
                         </button>
-                        <button onClick={() => onAccept?.(requests.data)} className="btn btn-primary">
-                            Donate (Accept Request)
-                        </button>
+                        {
+                            status == 'pending' ? <button onClick={() => showModal()} className="btn btn-primary">
+                                Donate (Accept Request)
+                            </button> : ""
+                        }
                     </div>
 
                 </div>
@@ -132,7 +195,7 @@ const DonationPage = ({ onAccept, onBack }) => {
     );
 }
 
-const Info=({ label, value })=> {
+const Info = ({ label, value }) => {
     return (
         <div>
             <p className="text-sm text-base-content/60">{label}</p>

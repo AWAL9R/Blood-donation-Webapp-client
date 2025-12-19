@@ -6,10 +6,9 @@ import toast from 'react-hot-toast';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router';
+import { bloodGroups } from '../../settings';
 
 
-
-const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
 const CreateDonationRequest = () => {
     const geoData = useLoaderData()

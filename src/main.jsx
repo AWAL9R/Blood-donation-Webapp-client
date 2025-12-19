@@ -26,18 +26,19 @@ import AllUsers from './pages/dashboard/AllUsers';
 import AdminRequiredCard from './components/AdminRequiredCard';
 import Error404 from './components/Error404';
 import AdminOrVolunteerRoute from './components/AdminOrVolunteerRoute';
+import SearchPage from './pages/SearchPage';
 
 
 
-const geoDataLoader=async () => {
-          try {
-            let data = await fetch("/bangladesh.json")
-            return data;
-          } catch (err) {
-            err; // to hide editor warning
-            return []
-          }
-        }
+const geoDataLoader = async () => {
+  try {
+    let data = await fetch("/bangladesh.json")
+    return data;
+  } catch (err) {
+    err; // to hide editor warning
+    return []
+  }
+}
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,11 @@ const router = createBrowserRouter([
         path: "/blood-donation-requests",
         element: <BloodDonationRequests />
       },
+      {
+        loader: geoDataLoader,
+        path: "/search",
+        element: <SearchPage />
+      },
 
     ]
   },
@@ -86,27 +92,27 @@ const router = createBrowserRouter([
         element: <CreateDonationRequest></CreateDonationRequest>
       },
       {
-        path:"my-donation-requests",
+        path: "my-donation-requests",
         element: <MyDonationRequests></MyDonationRequests>
       },
       {
-        path:"all-blood-donation-request",
-        element: <AdminOrVolunteerRoute fallback={<AdminRequiredCard/>}><AllBloodDonationRequests/></AdminOrVolunteerRoute>
+        path: "all-blood-donation-request",
+        element: <AdminOrVolunteerRoute fallback={<AdminRequiredCard />}><AllBloodDonationRequests /></AdminOrVolunteerRoute>
       },
       {
-        path:"all-users",
-        element: <AdminRoute fallback={<AdminRequiredCard/>}><AllUsers/></AdminRoute>
+        path: "all-users",
+        element: <AdminRoute fallback={<AdminRequiredCard />}><AllUsers /></AdminRoute>
       },
       {
         loader: geoDataLoader,
-        path:"profile",
-        element: <ProfilePage/>
+        path: "profile",
+        element: <ProfilePage />
       }
     ]
   },
   {
     path: "*",
-    element: <Error404/>
+    element: <Error404 />
   },
 ]);
 
@@ -115,13 +121,13 @@ const queryClient = new QueryClient()
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-    <AuthContextProvider>
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-      />
-      <RouterProvider router={router} />
-    </AuthContextProvider>
+      <AuthContextProvider>
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+        />
+        <RouterProvider router={router} />
+      </AuthContextProvider>
     </QueryClientProvider>
   </StrictMode>,
 )

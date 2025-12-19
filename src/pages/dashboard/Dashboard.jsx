@@ -3,7 +3,6 @@ import { Link } from 'react-router';
 import { useAuth } from '../../hooks/useAuth';
 // import { useQuery } from '@tanstack/react-query';
 // import useAxiosSecure from '../../hooks/useAxiosSecure';
-import { DonationRequestTable } from './MyDonationRequests';
 import BloodDonationRequests from '../BloodDonationRequests';
 
 
@@ -49,16 +48,6 @@ const Dashboard = () => {
 
                 </div>
             </section>
-
-
-            {/* {requests.data?.length>0 && 
-            <section className="bg-base-100 rounded-2xl shadow p-6 md:p-8 my-10">
-            <div className="overflow-x-auto">
-            <DonationRequestTable title="My recent donation requests" donations={requests.data} afterDelete={requests.refetch}></DonationRequestTable>
-            </div>
-            <Link to='my-donation-requests' className='btn w-full'>View my all requests</Link>
-            </section>
-            } */}
             
             <BloodDonationRequests limit={3} title="My recent donation requests" route='my-donation-requests'  afterTable={<Link to='my-donation-requests' className='btn w-full'>View my all requests</Link>} hiddenIfNoData={true}></BloodDonationRequests>
         </>

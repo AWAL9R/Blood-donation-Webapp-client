@@ -11,9 +11,9 @@ import toast from 'react-hot-toast';
 // import { auth } from '../firebase/firebase';
 import { AuthContext } from '../../contexts/AuthContext';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { bloodGroups } from '../../settings';
 
 
-const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
 const ProfilePage = () => {
     const { setUser, user
