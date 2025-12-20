@@ -110,7 +110,7 @@ export const DonationRequestTable = ({ donations, title = "My donation requests"
             {shouldFilter && <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-3">
                 <h2 className="text-xl font-bold text-gray-800"></h2>
                 <select
-                    className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm focus:ring-2 focus:ring-red-500 focus:outline-none"
+                    className="rounded-lg border border-gray-200 shadow-sm bg-white px-4 py-2 text-sm focus:ring-2 focus:ring-red-500 focus:outline-none"
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
                 >
@@ -122,7 +122,7 @@ export const DonationRequestTable = ({ donations, title = "My donation requests"
                 </select>
             </div>}
 
-            <table className="table table-zebra border border-gray-400 overflow-hidden">
+            <table className="table table-zebra border border-gray-200 shadow-sm overflow-hidden">
 
                 {/* head */}
                 <thead>

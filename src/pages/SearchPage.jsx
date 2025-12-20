@@ -21,14 +21,16 @@ const SearchPage = () => {
     const { user } = useAuth()
     const axiosSecure = useAxiosSecure()
     const requests = useQuery({
-        enabled: false,
+        // enabled: false,
         queryKey: ["search-users", user?.email, "limit", currentPage, bloodGroup, division, district, upazila], queryFn: async () => {
-           
+
             // const xdivision = geoData.divisions.find(dv => dv.id == division).name;
-            const xdistrict = geoData.districts.find(dv => dv.id == district).name;
+            const xdistrict = geoData.districts.find(dv => dv.id == district)?.name;
             // console.log("object");
-            const xupazila = geoData.upazilas.find(dv => dv.id == upazila)?.name||'';
-             
+            const xupazila = geoData.upazilas.find(dv => dv.id == upazila)?.name || '';
+
+            if(xdistrict==null)return null;
+
             const data = await axiosSecure.get(`/search-users?skip=${10 * currentPage}&bloodGroup=${encodeURIComponent(bloodGroup)}&district=${encodeURIComponent(xdistrict)}&upazila=${encodeURIComponent(xupazila)}`)
 
             if (data?.data?.totalMatch) {
@@ -40,7 +42,10 @@ const SearchPage = () => {
     })
 
 
-
+    // const setCurrentPageX = (d) => {
+    //     setCurrentPage(d)
+    //     requests.refetch()
+    // }
 
 
 
@@ -131,7 +136,7 @@ const SearchPage = () => {
                 </div>
             </div>
             <div>
-                {requests.isLoading&&<Loading></Loading>}
+                {requests.isLoading && <Loading></Loading>}
                 {requests.data ?
                     <section className="bg-base-100 rounded-2xl shadow p-6 md:p-8 my-10">
                         <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">

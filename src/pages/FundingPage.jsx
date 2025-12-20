@@ -118,7 +118,7 @@ const FundingPage = () => {
                                     disabled={isSubmitting}
                                     className="w-full bg-emerald-600 disabled:bg-gray-500 text-white p-2.5 rounded-lg font-semibold hover:bg-emerald-700 transition-colors"
                                 >
-                                    Submit Funding
+                                   Continue
                                 </button>
                             </div>
                         </form>
