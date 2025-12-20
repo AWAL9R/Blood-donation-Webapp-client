@@ -3,7 +3,6 @@ import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
 import { Link, useLoaderData, useNavigate } from 'react-router';
 import CheckPassword from '../../components/CheckPassword';
 import { useForm, useWatch } from 'react-hook-form';
-import axios from 'axios';
 import { useAuth } from '../../hooks/useAuth';
 import toast from 'react-hot-toast';
 // import { getFirebaseErrorMessage } from '../firebase/firebaseErrorMessages';
@@ -70,7 +69,7 @@ const ProfilePage = () => {
             const formData = new FormData();
             formData.append("file", data.photo[0])
             try {
-                photoUpload = await axios.post("http://localhost:3000/upload", formData)
+                photoUpload = await axiosSecure.post("/upload", formData)
             } catch (err) {
                 err
             }
@@ -99,7 +98,7 @@ const ProfilePage = () => {
         //         let photoUpload = null;
 
         //         try {
-        //             photoUpload = await axios.post("http://localhost:3000/upload", formData)
+        //             photoUpload = await axiosSecure.post("/upload", formData)
         //         } catch (err) {
         //             err
         //         }
@@ -161,10 +160,11 @@ const ProfilePage = () => {
     const user_upazila = geoData.upazilas.find(dv => dv.name == user.upazila).id;
 
     useEffect(() => {
+        if(edit){return;}
         setValue('division', user_division, { shouldWatch: true });
         setValue('district', user_district, { shouldWatch: true });
         setValue('upazila', user_upazila, { shouldWatch: true });
-    }, [division, district, user_division, user_district, user_upazila, setValue]);
+    }, [division, district, user_division, user_district, user_upazila, setValue, edit]);
 
     return (
         <div className="min-h-[80vh] max-[800px]:min-h-[100vw] p-4 my-10 flex flex-col items-center justify-center ">

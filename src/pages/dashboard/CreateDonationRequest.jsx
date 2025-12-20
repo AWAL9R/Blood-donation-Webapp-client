@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
-import { Link, useLoaderData } from 'react-router';
+import { Link, useLoaderData, useParams } from 'react-router';
 import { useForm, useWatch } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router';
 import { bloodGroups } from '../../settings';
+import { useQuery } from '@tanstack/react-query';
 
 
 
 const CreateDonationRequest = () => {
     const geoData = useLoaderData()
 
-    const {user}=useAuth()
+    const { user } = useAuth()
     // console.log(user);
-    const navigate=useNavigate()
+    const navigate = useNavigate()
 
     const [isSubmitting, setSubmitting] = useState(false);
 
@@ -25,6 +26,7 @@ const CreateDonationRequest = () => {
         // watch,
         control,
         formState: { errors },
+        setValue,
     } = useForm()
 
     const axiosSecure = useAxiosSecure()
@@ -36,19 +38,24 @@ const CreateDonationRequest = () => {
         const division = geoData.divisions.find(dv => dv.id == data.division).name;
         const district = geoData.districts.find(dv => dv.id == data.district).name;
         const upazila = geoData.upazilas.find(dv => dv.id == data.upazila).name;
-        data.division=division;
-        data.district=district;
-        data.upazila=upazila;
+        data.division = division;
+        data.district = district;
+        data.upazila = upazila;
 
         // console.log(division, district, upazila); return;
 
-        
+
         try {
-            const register = await axiosSecure.post('/create_donation_request', { ...data })
+            let register = null;
+            if(id){
+                register=await axiosSecure.patch(`/donation/${id}`, { ...data })
+            }else{
+                register=await axiosSecure.post('/create_donation_request', { ...data })
+            }
             toast(register.data.message)
             if (register.data.success) {
-                navigate(`/donation/${register.data.id}`)
-           }
+                navigate(`/donation/${register.data.id||id}`)
+            }
         } catch (err) {
             err;
             toast.error("Request Creation failed.")
@@ -63,25 +70,67 @@ const CreateDonationRequest = () => {
     const district = useWatch({ control, name: "district" });
     // const upazila = useWatch({ control, name: "upazila" });
 
+    const { id } = useParams()
+
+    const {data:reqData} = useQuery({
+        enabled: id != null,
+        queryKey: ['donations', user?.email, id],
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/donation/${id}`)
+            const data = res?.data?.data;
+
+            return data;
+        }
+    })
+
+    const initiatedRef=useRef(false);
+
+    useEffect(() => {
+        const data = reqData;
+        if (!data || initiatedRef.current) { return; }
+        // console.log(district);
+        const Xdivision = geoData.divisions.find(dv => dv.name == data.division).id;
+        const Xdistrict = geoData.districts.find(dv => dv.name == data.district).id;
+        const Xupazila = geoData.upazilas.find(dv => dv.name == data.upazila).id;
+
+        setValue("requester_name", data.requester_name)
+        setValue("requester_email", data.requester_email)
+        setValue("receiver_name", data.receiver_name)
+        setValue("bloodGroup", data.bloodGroup)
+        setValue("division", Xdivision, { shouldWatch: true })
+        setValue("district", Xdistrict, { shouldWatch: true })
+        setValue("upazila", Xupazila)
+        setValue("hospital_name", data.hospital_name)
+        setValue("full_address", data.full_address)
+        setValue("donation_date", data.donation_date)
+        setValue("donation_time", data.donation_time)
+        setValue("request_message", data.request_message)
+        if(district){
+            setTimeout(()=>{
+                initiatedRef.current=true;
+            })
+        }
+    }, [reqData, division, district, geoData, setValue])
+
 
     return (
         <div className="min-h-[80vh] max-[800px]:min-h-[100vw] p-4 my-10 flex flex-col items-center justify-center ">
             {/* <Title value={`${AppName} - Register`}></Title> */}
             <div className="max-w-155! text-center">
-                <h2>Create a Donation Request</h2>
+                <h2>{id != null ? "Edit" : "Create a"} Donation Request</h2>
             </div>
             <div className="container px-0! max-w-155!  bg-base-100 shadow-2xl rounded-3xl flex flex-col items-center justify-center overflow-hidden">
                 <h2 className='font-bold mb-5 text-center text-white bg-blue-300 w-full p-4'>Request Form</h2>
-                {user.status!='active' && <h3 className='bg-red-300'>You can not create any Request</h3>}
-                <form onSubmit={handleSubmit(onSubmit)} className={user.status!='active'?"hidden":`flex flex-col gap-5 p-2 w-9/10 md:w-8/10`}>
+                {user.status != 'active' && <h3 className='bg-red-300'>You can not create any Request</h3>}
+                <form onSubmit={handleSubmit(onSubmit)} className={user.status != 'active' ? "hidden" : `flex flex-col gap-5 p-2 w-9/10 md:w-8/10`}>
 
                     <h3 className='text-primary mb-0'>Requester Name:</h3>
-                    <input type="text" disabled={true} {...register("requester_name", { required: 'Name is required' })} className='input md:input-lg w-full' placeholder='Enter your full name' value={user.displayName||user.name}/>
+                    <input type="text" disabled={true} {...register("requester_name", { required: 'Name is required' })} className='input md:input-lg w-full' placeholder='Enter your full name' value={user.displayName || user.name} />
 
                     {errors.requester_name && <p className="error">{errors.requester_name.message}</p>}
 
                     <h3 className='text-primary mb-0'>Requester Email:</h3>
-                    <input type="email"  disabled={true} {...register("requester_email", { required: 'Email is required' })} className='input md:input-lg w-full' placeholder='Enter your email address' value={user.email} />
+                    <input type="email" disabled={true} {...register("requester_email", { required: 'Email is required' })} className='input md:input-lg w-full' placeholder='Enter your email address' value={user.email} />
 
                     {errors.requester_email && <p className="error">{errors.requester_email.message}</p>}
 
@@ -180,12 +229,12 @@ const CreateDonationRequest = () => {
 
                     {errors.request_message && <p className="error">{errors.request_message.message}</p>}
 
-                    
 
 
 
 
-                    <button disabled={isSubmitting} className='btn btn-primary md:btn-lg w-full'>Submit Request</button>
+
+                    <button disabled={isSubmitting} className='btn btn-primary md:btn-lg w-full'>{id != null ? "Edit" : "Submit Request"}</button>
 
 
 

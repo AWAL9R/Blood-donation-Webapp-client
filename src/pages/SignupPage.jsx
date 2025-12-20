@@ -3,7 +3,6 @@ import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
 import { Link, useLoaderData, useLocation, useNavigate } from 'react-router';
 import CheckPassword from '../components/CheckPassword';
 import { useForm, useWatch } from 'react-hook-form';
-import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
 // import { getFirebaseErrorMessage } from '../firebase/firebaseErrorMessages';
@@ -67,7 +66,7 @@ const SignupPage = () => {
 
         let photoUpload = null;
         try {
-            photoUpload = await axios.post("http://localhost:3000/upload", formData)
+            photoUpload = await axiosSecure.post("/upload", formData)
         } catch (err) {
             err
         }
@@ -95,7 +94,7 @@ const SignupPage = () => {
         //         let photoUpload = null;
 
         //         try {
-        //             photoUpload = await axios.post("http://localhost:3000/upload", formData)
+        //             photoUpload = await axiosSecure.post("/upload", formData)
         //         } catch (err) {
         //             err
         //         }

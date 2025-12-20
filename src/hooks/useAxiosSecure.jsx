@@ -1,48 +1,48 @@
 import axios from 'axios';
 // import React, { useEffect } from 'react';
-import { useAuth } from './useAuth';
+// import { useAuth } from './useAuth';
 
 export const axiosInstance = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: "https://blood-link-server-sage.vercel.app",
     withCredentials: true,
 });
 
 const useAxiosSecure = () => {
 
-    const {user}=useAuth()
+    // const {user}=useAuth()
 
-    // useEffect(() => {
-        // const unsubscribeRequestInterceptor = 
-        axiosInstance.interceptors.request.use(function (config) {
-            // Do something before request is sent
-            config.headers.Authorization=`Bearer ${user?.accessToken}`
-            return config;
-        }, function (error) {
-            // Do something with request error
-            return Promise.reject(error);
-        },
-            // { synchronous: true, runWhen: () => /* This function returns true */}
-        );
-        // const unsubscribeResponseInterceptor = 
-        axiosInstance.interceptors.response.use(function onFulfilled(response) {
-            // Any status code that lie within the range of 2xx cause this function to trigger
-            // Do something with response data
-            if(response.status==401){
-                //TODO: redirect user to login page
-            }
-            return response;
-        }, function onRejected(error) {
-            // Any status codes that falls outside the range of 2xx cause this function to trigger
-            // Do something with response error
-            return Promise.reject(error);
-        });
+    // // useEffect(() => {
+    //     // const unsubscribeRequestInterceptor = 
+    //     axiosInstance.interceptors.request.use(function (config) {
+    //         // Do something before request is sent
+    //         config.headers.Authorization=`Bearer ${user?.accessToken}`
+    //         return config;
+    //     }, function (error) {
+    //         // Do something with request error
+    //         return Promise.reject(error);
+    //     },
+    //         // { synchronous: true, runWhen: () => /* This function returns true */}
+    //     );
+    //     // const unsubscribeResponseInterceptor = 
+    //     axiosInstance.interceptors.response.use(function onFulfilled(response) {
+    //         // Any status code that lie within the range of 2xx cause this function to trigger
+    //         // Do something with response data
+    //         if(response.status==401){
+    //             //TODO: redirect user to login page
+    //         }
+    //         return response;
+    //     }, function onRejected(error) {
+    //         // Any status codes that falls outside the range of 2xx cause this function to trigger
+    //         // Do something with response error
+    //         return Promise.reject(error);
+    //     });
 
-    //     return ()=>{
-    //         unsubscribeRequestInterceptor()
-    //         unsubscribeResponseInterceptor()
-    //     }
+    // //     return ()=>{
+    // //         unsubscribeRequestInterceptor()
+    // //         unsubscribeResponseInterceptor()
+    // //     }
 
-    // })
+    // // })
 
     return axiosInstance;
 };

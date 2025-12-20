@@ -97,6 +97,11 @@ const router = createBrowserRouter([
         element: <CreateDonationRequest></CreateDonationRequest>
       },
       {
+        loader: geoDataLoader,
+        path: "edit-donation-request/:id",
+        element: <CreateDonationRequest></CreateDonationRequest>
+      },
+      {
         path: "my-donation-requests",
         element: <MyDonationRequests></MyDonationRequests>
       },

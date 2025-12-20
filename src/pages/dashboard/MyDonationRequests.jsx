@@ -163,7 +163,7 @@ export const DonationRequestTable = ({ donations, title = "My donation requests"
                         <td className='text-nowrap'>{item.donor ? <span>{item.donor.name}, <br/> {item.donor.email}</span> : "N/A"}</td>
                         <td className=''>
                             <div className='flex gap-1'>
-                                {(user?.email == item.requester_email || user?.role == 'admin') ? <><Link className="btn btn-info" to={`/edit/donation/${item._id}`}>Edit</Link>
+                                {(user?.email == item.requester_email || user?.role == 'admin') ? <><Link className="btn btn-info" to={`/dashboard/edit-donation-request/${item._id}`}>Edit</Link>
                                 <button className="btn btn-error" onClick={() => handleDelete(item)}>Delete</button></> : ""}
                             <Link className="btn btn-success" to={`/donation/${item._id}`}>View</Link>
                             </div>
