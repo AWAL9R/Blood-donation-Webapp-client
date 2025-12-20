@@ -39,7 +39,7 @@ const NavBar = () => {
 
     return (
         <nav>
-            <div className='max-[600px]:fixed z-999 bg-white w-full'>
+            <div className='max-[800px]:fixed z-999 bg-white w-full'>
                 <div className='shadow-sm '>
                     <div className='container p-4 h-16  flex justify-between items-stretch select-none'>
                         <div className='flex items-center gap-3'>
@@ -52,7 +52,7 @@ const NavBar = () => {
                             </Link>
                             {/* Links */}
 
-                            <div className="flex items-streach h-full gap-3 max-[600px]:w-0 overflow-hidden inline_nav pt-2">
+                            <div className="flex items-streach h-full gap-3 max-[800px]:w-0 overflow-hidden inline_nav pt-2">
                                 {mainNavLinks}
 
                                  {user!=null && <><NavLink to='/dashboard' className=''>Dashboard</NavLink></>}
@@ -63,7 +63,7 @@ const NavBar = () => {
                         <div className='flex items-center'>
 
                             {
-                                user?.email ? <div className="dropdown dropdown-bottom dropdown-end max-[600px]:hidden">
+                                user?.email ? <div className="dropdown dropdown-bottom dropdown-end max-[800px]:hidden">
                                     <div tabIndex={0} role="button" className="select-none">
                                         <img referrerPolicy="no-referrer" src={user?.photoURL} alt="profile image" className='h-12 rounded-full aspect-square' />
                                     </div>
@@ -73,10 +73,10 @@ const NavBar = () => {
                                     </ul>
                                 </div>
                                     :
-                                    <div className="max-[600px]:hidden"><Link to='/login'><button className="btn btn-primary">Login</button></Link></div>
+                                    <div className="max-[800px]:hidden"><Link to='/login'><button className="btn btn-primary">Login</button></Link></div>
                             }
 
-                            <div className="hidden max-[600px]:block text-3xl hover:scale-103">
+                            <div className="hidden max-[800px]:block text-3xl hover:scale-103">
                                 {showMenu ? <RxCross2 onClick={() => setShowMenu(!showMenu)}></RxCross2> : <TfiMenuAlt onClick={() => setShowMenu(!showMenu)}></TfiMenuAlt>}
                             </div>
 
@@ -84,7 +84,7 @@ const NavBar = () => {
                         </div>
                     </div>
                     {/* Mobile menu */}
-                    <div className={`transition-all duration-500 overflow-hidden max-h-0 ${showMenu ? 'max-[600px]:max-h-1000' : 'max-[600px]:max-h-0'}`}>
+                    <div className={`transition-all duration-500 overflow-hidden max-h-0 ${showMenu ? 'max-[800px]:max-h-1000' : 'max-[800px]:max-h-0'}`}>
                         <div className='block_nav mx-4'>
                             {mainNavLinks}
                             {user==null && <NavLink to='/login' className=''>Login</NavLink>}
@@ -103,7 +103,7 @@ const NavBar = () => {
                     </div>
                 </div>
             </div>
-            <div className='h-0 w-full max-[600px]:h-17'></div>
+            <div className='h-0 w-full max-[800px]:h-17'></div>
         </nav>
     );
 };

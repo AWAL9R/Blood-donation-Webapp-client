@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth';
 // import { useQuery } from '@tanstack/react-query';
 // import useAxiosSecure from '../../hooks/useAxiosSecure';
 import BloodDonationRequests from '../BloodDonationRequests';
+import StatsCard from '../../components/StatsCard';
 
 
 
@@ -48,6 +49,8 @@ const Dashboard = () => {
 
                 </div>
             </section>
+
+            {user.role=='admin' || user.role=='volunteer' ? <StatsCard/>:''}
             
             <BloodDonationRequests limit={3} title="My recent donation requests" route='my-donation-requests'  afterTable={<Link to='my-donation-requests' className='btn w-full'>View my all requests</Link>} hiddenIfNoData={true}></BloodDonationRequests>
         </>

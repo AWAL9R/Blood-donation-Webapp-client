@@ -24,17 +24,6 @@ const MyDonationRequests = () => {
     // })
 
 
-    // return (
-    //     <div>
-    //         {requests.data ?
-    //             <section className="bg-base-100 rounded-2xl shadow p-6 md:p-8 my-10">
-    //                 <div className="overflow-x-auto">
-    //                     <DonationRequestTable donations={requests.data} afterDelete={requests.refetch}></DonationRequestTable>
-    //                 </div>
-    //             </section>
-    //             : <Loading></Loading>}
-    //     </div>
-    // );
 
     return <BloodDonationRequests title={"My donation requests"} route='my-donation-requests'></BloodDonationRequests>
 };
