@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
 import { useAuth } from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
@@ -28,13 +28,13 @@ const MyDonationRequests = () => {
     return <BloodDonationRequests title={"My donation requests"} route='my-donation-requests'></BloodDonationRequests>
 };
 
-export const DonationRequestTable = ({ donations, title = "My donation requests", afterDelete = () => { }, shouldFilter=true }) => {
+export const DonationRequestTable = ({ donations, title = "My donation requests", afterDelete = () => { }, shouldFilter=true, status, setStatus }) => {
 
-    const [filterStatus, setFilterStatus] = useState('all');
+    // const [filterStatus, setFilterStatus] = useState('all');
 
-    const filteredDonations = filterStatus === 'all'
-        ? donations
-        : donations.filter(donation => donation.status === filterStatus);
+    // const filteredDonations = filterStatus === 'all'
+    //     ? donations
+    //     : donations.filter(donation => donation.status === filterStatus);
 
     const { user } = useAuth()
 
@@ -111,8 +111,8 @@ export const DonationRequestTable = ({ donations, title = "My donation requests"
                 <h2 className="text-xl font-bold text-gray-800"></h2>
                 <select
                     className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm focus:ring-2 focus:ring-red-500 focus:outline-none"
-                    value={filterStatus}
-                    onChange={(e) => setFilterStatus(e.target.value)}
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
                 >
                     <option value="all">All</option>
                     <option value="pending">Pending</option>
@@ -142,7 +142,7 @@ export const DonationRequestTable = ({ donations, title = "My donation requests"
                 </thead>
                 <tbody>
                     {/* row 1 */}
-                    {filteredDonations.map(item => <tr key={item._id}>
+                    {donations.map(item => <tr key={item._id}>
                         <td className='text-nowrap'>{item.receiver_name}</td>
                         <td className='text-nowrap'>{item.upazila}, {item.district}</td>
                         <td className='text-nowrap'>{item.donation_date}</td>
@@ -169,6 +169,12 @@ export const DonationRequestTable = ({ donations, title = "My donation requests"
                             </div>
                         </td>
                     </tr>)}
+
+                    {donations?.length==0?<tr>
+                                <td colSpan="5" className="px-6 py-12 text-center text-gray-400">
+                                    No donations found matching "{status}"
+                                </td>
+                            </tr>:''}
 
                 </tbody>
             </table>
